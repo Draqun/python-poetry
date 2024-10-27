@@ -1,0 +1,65 @@
+name: Main pipeline
+run-name: ${{ github.triggering_actor }} launched deploy via ${{ github.event_name }} on ${{ github.ref_name }}
+on:
+  push:
+    branches:
+      - "master"
+    tags:
+      - "*"
+
+permissions:
+  contents: read
+
+env:
+  WORKING_DIRECTORY: "."
+  REPOSITORY: "draqun/python-poetry"
+jobs:
+  build-aws-echo-lambda:
+    name: Build and deploy
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        PYTHON: [ "3.13", "3.12", "3.11", "3.10", "3.9" ]
+        POETRY: [ "1.8.2" ]
+        SUFFIX: [ "", "-slim", "-alpine", "-bookworm", "-bullseye", "-slim-bookworm", "-slim-bullseye" ]
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Get short commit SHA
+        id: vars
+        run: |
+          short_sha=$(git rev-parse --short ${{ github.sha }})
+          echo "COMMIT_SHA=$short_sha" >> $GITHUB_ENV
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python make-dockerfile.py --python="${{ matrix.PYTHON }}" --poetry="${{ matrix.POETRY }}" --suffix="${{ matrix.SUFFIX }}"
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: make build
+
+      - name: Create and Push image tag from tag draqun/python-poetry:${{ matrix.PYTHON }}-${{ matrix.poetry }}${{ matrix.suffix }}
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          TAG=${{ matrix.PYTHON }}-${{ matrix.poetry }}${{ matrix.suffix }} make tag
+          TAG=${{ matrix.PYTHON }}-${{ matrix.poetry }}${{ matrix.suffix }} REPOSITORY=${{ env.REPOSITORY }} make push
+
+      - name: Create and Push image tag from master branch
+        if: github.ref == 'refs/heads/master'
+        run: |
+          TAG=latest-${{ matrix.PYTHON }}-${{ matrix.poetry }}${{ matrix.suffix }} make tag
+          TAG=latest-${{ matrix.PYTHON }}-${{ matrix.poetry }}${{ matrix.suffix }} REPOSITORY=${{ env.REPOSITORY }} make push

@@ -1,0 +1,11 @@
+{% if suffix %}FROM python:{{ python }}{{ suffix }}
+{% else %}FROM python:{{ python }}
+{% endif %}
+LABEL maintaner="Damian Giebas"
+LABEL license="MIT"
+
+ENV POETRY_HOME=/opt/poetry
+ENV PATH="$POETRY_HOME/bin/:${PATH}"
+RUN python3 -m venv $POETRY_HOME
+RUN $POETRY_HOME/bin/pip install poetry=={{ poetry }}
+RUN poetry --version
