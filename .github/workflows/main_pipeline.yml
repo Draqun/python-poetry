@@ -50,7 +50,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker image
-        run: make build
+        run: COMMIT_SHA=$COMMIT_SHA make build
 
       - name: Create and Push image tag from tag draqun/python-poetry:${{ matrix.PYTHON }}-${{ matrix.poetry }}${{ matrix.suffix }}
         if: startsWith(github.ref, 'refs/tags/')

@@ -4,7 +4,7 @@ SHELL := /bin/sh
 
 PROJECT_NAME = python-poetry
 REPOSITORY := draqun/$(PROJECT_NAME)
-COMMIT_SHA ?= 'none'
+COMMIT_SHA ?= none
 
 
 build:
