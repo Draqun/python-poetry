@@ -19,8 +19,8 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        PYTHON: [ "3.13", "3.12", "3.11", "3.10", "3.9" ]
-        POETRY: [ "1.8.2", "1.8.3", "1.8.4", "2.0.0" ]
+        PYTHON: [ "3.13", "3.12", "3.11", "3.10" ]
+        POETRY: [ "1.8.5", "2.0.0", "2.0.1", "2.1.0", "2.1.1" ]
         SUFFIX: [ "", "-slim", "-alpine", "-bookworm", "-bullseye", "-slim-bookworm", "-slim-bullseye" ]
     steps:
       - name: Check out the repo
@@ -61,5 +61,5 @@ jobs:
       - name: Create and Push image tag from master branch
         if: github.ref == 'refs/heads/master'
         run: |
-          TAG=latest-${{ matrix.PYTHON }}-${{ matrix.poetry }}${{ matrix.suffix }} make tag
-          TAG=latest-${{ matrix.PYTHON }}-${{ matrix.poetry }}${{ matrix.suffix }} REPOSITORY=${{ env.REPOSITORY }} make push
+          TAG=${{ matrix.PYTHON }}-${{ matrix.poetry }}${{ matrix.suffix }} make tag
+          TAG=${{ matrix.PYTHON }}-${{ matrix.poetry }}${{ matrix.suffix }} REPOSITORY=${{ env.REPOSITORY }} make push
