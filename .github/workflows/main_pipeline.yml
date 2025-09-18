@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        PYTHON: [ "3.13", "3.12" ]
+        PYTHON: [ "3.13", "3.12", "3.11" ]
         POETRY: [ "2.1.0", "2.1.1", "2.1.2" ]
         SUFFIX: [ "", "-slim", "-alpine", "-bookworm", "-bullseye", "-slim-bookworm", "-slim-bullseye" ]
     steps:
