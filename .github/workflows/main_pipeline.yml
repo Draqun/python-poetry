@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         PYTHON: [ "3.13", "3.12", "3.11" ]
-        POETRY: [ "2.1.0", "2.1.1", "2.1.2" ]
+        POETRY: [ "2.1.1", "2.1.2", "2.2.0" ]
         SUFFIX: [ "", "-slim", "-alpine", "-bookworm", "-bullseye", "-slim-bookworm", "-slim-bullseye" ]
     steps:
       - name: Check out the repo
