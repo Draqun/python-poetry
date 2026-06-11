@@ -1,5 +1,5 @@
-{% if suffix %}FROM python:{{ python }}{{ suffix }}
-{% else %}FROM python:{{ python }}
+{% if suffix %}FROM public.ecr.aws/docker/library/python:{{ python }}{{ suffix }}
+{% else %}FROM public.ecr.aws/docker/library/python:{{ python }}
 {% endif %}
 LABEL maintainer="Damian Giebas"
 LABEL license="MIT"
