@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         PYTHON: [ "3.14", "3.13", "3.12", "3.11" ]
-        POETRY: [ "2.3.0", "2.3.1", "2.3.2", "2.3.3", "2.3.4" ]
+        POETRY: [ "2.3.0", "2.3.1", "2.3.2", "2.3.3", "2.3.4", "2.4.0", "2.4.1" ]
         SUFFIX: [ "", "-slim", "-alpine", "-bookworm", "-bullseye", "-slim-bookworm", "-slim-bullseye" ]
         exclude:
           - PYTHON: "3.14"
