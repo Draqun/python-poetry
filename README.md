@@ -9,5 +9,16 @@
 
 Welcome here dear developer. Since you managed to find this repository you are probably interested in using my image with my Python and Poetry. Use it as you wish, and if you are interested in the code, project structure, or are looking for a template I recommend you visit the repository. The link is in the Links section below.
 
+## Published images
+
+Tags follow `<python>-<poetry>[<suffix>]`, for example `draqun/python-poetry:3.13-2.5.1-slim`.
+
+- Python: 3.12, 3.13, 3.14, 3.15
+- Poetry: 2.4.0 and newer
+- Suffix: none, `-slim`, `-alpine`
+- `poetry-plugin-export` (`poetry export`) is preinstalled.
+
+Need another Python, Poetry or base-image variant (for example `-bookworm`)? Open an issue or a pull request at https://github.com/Draqun/python-poetry and say what you need. Older tags stay on Docker Hub but are no longer rebuilt.
+
 ## Links:
 - Repository: https://github.com/Draqun/python-poetry

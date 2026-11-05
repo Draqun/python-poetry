@@ -21,16 +21,7 @@ jobs:
       matrix:
         PYTHON: [ "3.15", "3.14", "3.13", "3.12" ]
         POETRY: [ "2.4.0", "2.4.1", "2.4.2", "2.4.3", "2.5.0", "2.5.1" ]
-        SUFFIX: [ "", "-slim", "-alpine", "-bookworm", "-bullseye", "-slim-bookworm", "-slim-bullseye" ]
-        exclude:
-          - PYTHON: "3.14"
-            SUFFIX: "-bullseye"
-          - PYTHON: "3.14"
-            SUFFIX: "-slim-bullseye"
-          - PYTHON: "3.15"
-            SUFFIX: "-bullseye"
-          - PYTHON: "3.15"
-            SUFFIX: "-slim-bullseye"
+        SUFFIX: [ "", "-slim", "-alpine" ]
     steps:
       - name: Check out the repo
         uses: actions/checkout@v6
