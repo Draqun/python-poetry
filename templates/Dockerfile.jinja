@@ -10,8 +10,12 @@ ENV PATH="$POETRY_HOME/bin/:${PATH}"
 # and shipped. pip leaves tilde-prefixed backup dirs (e.g. ~platformdirs-*.dist-info)
 # in site-packages when an upgrade is interrupted; those corrupt later
 # `poetry self add`/importlib.metadata scans, so scrub them before the image is sealed.
+# poetry-plugin-export (`poetry export`) is baked in so consumers skip the slow
+# `poetry self add` at runtime. Installed in the same pip call as poetry so pip
+# keeps the pinned poetry version; the plugin is discovered via entry points.
 RUN python3 -m venv "$POETRY_HOME" \
  && "$POETRY_HOME/bin/pip" install --no-cache-dir --upgrade pip \
- && "$POETRY_HOME/bin/pip" install --no-cache-dir "poetry=={{ poetry }}" \
+ && "$POETRY_HOME/bin/pip" install --no-cache-dir "poetry=={{ poetry }}" poetry-plugin-export \
  && find "$POETRY_HOME" -name '~*' -exec rm -rf {} + \
- && poetry --version
+ && poetry --version \
+ && poetry export --help > /dev/null
